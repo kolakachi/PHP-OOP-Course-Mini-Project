@@ -1,4 +1,4 @@
-class db {
+class Database {
     protected static $instance;
     protected $connection;
     protected $query;
