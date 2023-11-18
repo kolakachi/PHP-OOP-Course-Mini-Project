@@ -5,6 +5,6 @@ spl_autoload_register(function ($className) {
 });
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'your_username');
-define('DB_PASSWORD', 'your_password');
+define('DB_USER', 'your_db_username');
+define('DB_PASSWORD', 'your_db_password');
 define('DB_NAME', 'oop_db');
