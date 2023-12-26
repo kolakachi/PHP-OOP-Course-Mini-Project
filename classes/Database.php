@@ -2,10 +2,11 @@
 class Database {
 
     protected static $instance;
-    protected $connection;
+    protected static $connection;
     protected $query;
     protected $queryType;
     protected static $table;
+    protected $values;
 
     // Create a database connection.
     public function __construct() {
@@ -27,18 +28,36 @@ class Database {
 
     public static function table($table) {
         self::$table = $table;
-        return "yesss";//self::$instance; // Allow method chaining.
+        return self::getInstance(); // Allow method chaining.
     }
 
     public function select() {
-        // Function for reading data from the database (to be implemented).
+        $this->query = "SELECT * FROM " . self::$table;
+        return $this;
+    }
+
+    public function where ($condition, $values = [] ) {
+        $this->query .= " WHERE $condition";
+        $this->values = $values;
+        return $this;
     }
 
     public function update() {
         // Function for updating data in the database (to be implemented).
     }
 
-    protected function run() {
-        // Internal function for executing SQL queries (to be implemented).
+    public function run()
+    {
+        $statement = self::$connection->prepare($this->query);
+        $executed = $statement->execute($this->values);
+
+        if ($executed) {
+            $data = $statement->fetchAll(PDO::FETCH_OBJ);
+            if (is_array($data) && count($data) > 0) {
+                return $data;
+            }
+        }
+
+        return null;
     }
 }
